@@ -1,7 +1,7 @@
 import {useState, useRef} from 'react'
 
 export default function App(){
-    const [page, setPage] = useState('to-do');
+    const [page, setPage] = useState('To-Do');
     const [toDoList, setToDoList] = useState([]);
     const [compList, setCompList] = useState([]);
     const [listCount, setListCount] = useState(0);
@@ -25,6 +25,7 @@ export default function App(){
             <Footer 
             setPage={setPage} 
             listCount={listCount}
+            page={page}
             />
         </div>
     )
@@ -59,25 +60,28 @@ function InputBox(props){
 
 function ListItems(props){
     const [rerender, setRerender] = useState(true);
-
-    const ref=useRef(null);
+    let tasks = props.toDoList;
+    if(props.page !== 'All'){
+        let filterVar = props.page === 'Completed' ? true : false;
+        tasks = props.toDoList.filter((item) => item.isDone === filterVar);
+    }
     return (
         <div id='taskSection' className='container'>
-            {props.toDoList.map( (item, index) => 
+            {tasks.map( (item, index) => 
                 <div className='row d-flex justify-content-center container' 
                 id={item.task + index} 
                 key={item.task + index}
                 > 
                     <input 
-                    className={"form-check-input " + (item.isDone ? 'btn-primary' : '')  }
+                    className="form-check-input" 
                     onClick={() => {item.isDone = !item.isDone 
                         setRerender(!rerender)
                     }}
                     type="checkbox" 
-                    value="" 
-                    id={item.task + index}/>
+                    defaultChecked={item.isDone ? true : false} 
+                    id={item.task + index}
+                    />
                         <div className={item.isDone ? "text-muted text-decoration-line-through" : '' }
-                        ref={ref} 
                         id={item.task + index + 'T'}
                         >
                             {item.task}
@@ -93,12 +97,16 @@ function Footer(props){
         <div className='container-fluid d-flex justify-content-center text-muted'>
             <p> &nbsp; {props.listCount} &nbsp; </p>
             {sections.map( (item) => { 
-                return <div key={item} id={item} 
+                return (
+                <div 
+                key={item}
+                id={item} 
+                className={item === props.page ? 'fw-bold' : ''}  
                 onClick={()=> props.setPage(item)}
                 > 
                 &nbsp; {item} &nbsp; 
                 </div>
-            })}
+                )})}
         </div>
     )
 }
