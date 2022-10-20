@@ -28,7 +28,8 @@ export default function App(){
             />
             <ListItems 
             listCount={listCount} 
-            toDoList={toDoList} 
+            toDoList={toDoList}
+            setToDoList={setToDoList} 
             setListCount={setListCount} 
             setCompList={setCompList} 
             compList={compList} 
@@ -54,7 +55,7 @@ function InputBox(props){
             if(boxValue === ''){
                 return;
             }
-            let taskObj = {isDone: false, task: boxValue}
+            let taskObj = {isDone: false, task: boxValue, ID: new Date()};
             props.setToDoList([...props.list, taskObj]);
             window.localStorage.setItem('toDoList', JSON.stringify([...props.list, taskObj]));
             props.setListCount(props.listCount + 1);
@@ -104,6 +105,12 @@ function ListItems(props){
                         >
                             {item.task}
                         </div>
+                        <button className='btn btn-outline-danger col-2' onClick={() => {
+                                props.setToDoList(tasks.filter(task => task.ID !== item.ID));
+                                props.setListCount(props.count - 1);
+                                window.localStorage.setItem('count', props.count - 1);
+                                window.localStorage.setItem('toDoList', JSON.stringify(tasks.filter(task => task.ID !== item.ID)));
+                        }}>X</button>
                 </div> )}
         </div>
     )
