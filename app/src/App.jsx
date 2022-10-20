@@ -1,4 +1,5 @@
 import {useState, useRef, useEffect} from 'react'
+import './css/styles.css'
 
 export default function App(){
     const [page, setPage] = useState('To-Do');
@@ -19,7 +20,8 @@ export default function App(){
     }, [])
     
     return(
-        <div className='text-center justify-content-center'>
+        <div className='text-center mx-auto justify-content-center'>
+            <h3 className='text-success'>TO DO LATER? ALWAYS LATER</h3>
             <InputBox  
             list={toDoList} 
             setListCount={setListCount} 
@@ -88,9 +90,9 @@ function ListItems(props){
         tasks = props.toDoList.filter((item) => item.isDone === filterVar);
     }
     return (
-        <div id='taskSection' className='row container d-flex justify-content-center'>
+        <div id='taskSection' className=' row container-fluid d-flex justify-content-center overflow-scroll'>
             {tasks.map( (item, index) => 
-                <div className='m-2 d-flex col-12 justify-content-center text-center container-fluid' 
+                <div className='m-2 d-flex flex-row col-8 justify-content-center text-center container-fluid' 
                 id={item.task + index} 
                 key={item.task + index}
                 > 
@@ -103,12 +105,12 @@ function ListItems(props){
                     defaultChecked={item.isDone} 
                     id={item.task + index}
                     />
-                        <div className={item.isDone ? "text-muted text-decoration-line-through" : '' }
+                        <div className={item.isDone ? "text-muted text-decoration-line-through text-white" : 'text-white' }
                         id={item.task + index + 'T'}
                         >
                             {item.task}
                         </div>
-                        <button className='btn mx-1 btn-outline-danger text-center col-1' onClick={() => {
+                        <button className='btn px-1 mx-1 btn-outline-danger text-center col-1' onClick={() => {
                                 props.setToDoList(tasks.filter(task => task.ID !== item.ID));
                                 props.setListCount(props.count - 1);
                                 window.localStorage.setItem('count', props.count - 1);
@@ -122,7 +124,7 @@ function ListItems(props){
 function Footer(props){
     let sections = ['To-Do', 'Completed', 'All']
     return(
-        <div className='container-fluid d-flex justify-content-center text-muted'>
+        <div className='position-absolute start-50 translate-middle text-bg-light container col d-flex justify-content-center text-muted'>
             <p> &nbsp; {props.listCount} &nbsp; </p>
             {sections.map( (item) => { 
                 return (

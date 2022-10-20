@@ -1,0 +1,8 @@
+html, body, root{
+    background: url(chalkboard.png); 
+    background-Repeat: 'no-repeat';
+    width: '100v';
+    height: 'auto';
+    /* background-color: red;  */
+
+}
