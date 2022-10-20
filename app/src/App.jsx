@@ -1,10 +1,20 @@
-import {useState, useRef} from 'react'
+import {useState, useRef, useEffect} from 'react'
 
 export default function App(){
     const [page, setPage] = useState('To-Do');
     const [toDoList, setToDoList] = useState([]);
     const [compList, setCompList] = useState([]);
     const [listCount, setListCount] = useState(0);
+    // let listObj = window.localStorage.getItem('toDoList');
+    // let count = 0;
+    // useEffect( () => {
+    //     if(listObj){
+    //         listObj = JSON.parse(listObj);
+    //         count = listObj.length ;
+    //         setListCount(listObj.length)
+    //     }
+    // }, [])
+    
     return(
         <div className='text-center justify-content-center'>
             <InputBox  
@@ -43,6 +53,7 @@ function InputBox(props){
             }
             let taskObj = {isDone: false, task: boxValue}
             props.setToDoList([...props.list, taskObj]);
+            window.localStorage.setItem('toDoList', JSON.stringify(props.list));
             props.setListCount(props.listCount + 1);
             ref.current.value = '';
         }
