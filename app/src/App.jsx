@@ -5,15 +5,18 @@ export default function App(){
     const [toDoList, setToDoList] = useState([]);
     const [compList, setCompList] = useState([]);
     const [listCount, setListCount] = useState(0);
-    // let listObj = window.localStorage.getItem('toDoList');
-    // let count = 0;
-    // useEffect( () => {
-    //     if(listObj){
-    //         listObj = JSON.parse(listObj);
-    //         count = listObj.length ;
-    //         setListCount(listObj.length)
-    //     }
-    // }, [])
+    let listObj = window.localStorage.getItem('toDoList');
+    let count;
+    window.localStorage.getItem('count') ? count = window.localStorage.getItem('count') : count = 0;
+    useEffect( () => {
+        if(count != 0){
+            setToDoList(JSON.parse(window.localStorage.getItem('toDoList')));
+            listObj = JSON.parse(window.localStorage.getItem('toDoList'));
+            count = listObj.length;
+            setListCount(count);
+            window.localStorage.setItem('count', count);
+        }
+    }, [])
     
     return(
         <div className='text-center justify-content-center'>
@@ -53,8 +56,9 @@ function InputBox(props){
             }
             let taskObj = {isDone: false, task: boxValue}
             props.setToDoList([...props.list, taskObj]);
-            window.localStorage.setItem('toDoList', JSON.stringify(props.list));
+            window.localStorage.setItem('toDoList', JSON.stringify([...props.list, taskObj]));
             props.setListCount(props.listCount + 1);
+            window.localStorage.setItem('count', props.listCount + 1);
             ref.current.value = '';
         }
     }
@@ -71,6 +75,9 @@ function InputBox(props){
 
 function ListItems(props){
     const [rerender, setRerender] = useState(true);
+    if(!props.toDoList){
+        return;
+    }
     let tasks = props.toDoList;
     if(props.page !== 'All'){
         let filterVar = props.page === 'Completed' ? true : false;
