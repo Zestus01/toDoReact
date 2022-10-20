@@ -5,7 +5,7 @@ export default function App(){
     // Setting the initial state values and such
     const [page, setPage] = useState('All');
     const [toDoList, setToDoList] = useState([]);
-    const [compList, setCompList] = useState([]);
+    // const [compList, setCompList] = useState([]);
     const [listCount, setListCount] = useState(0);
     // Helper variables for local storage
     let listObj;
@@ -40,8 +40,6 @@ export default function App(){
                 toDoList={toDoList}
                 setToDoList={setToDoList} 
                 setListCount={setListCount} 
-                setCompList={setCompList} 
-                compList={compList} 
                 page={page}
                 count={listCount}
             />
@@ -57,7 +55,6 @@ export default function App(){
 // Deals with inputting the tasks and parsing into local storage
 function Header(props){
     // Helper variable for calculating count after clear done
-    let deleCount = 0;
     const ref = useRef(null);
     // If a key is pushed down this gets called, this only runs if the key is enter
     function handleEnter(e){
@@ -92,7 +89,50 @@ function Header(props){
                 placeholder='TO DO NEVA' 
                 onKeyDown={handleEnter}
             />
-            <button 
+            {/* < UncheckBox {...props}/> */}
+            < ClearDone {...props}/>
+            < ClearAll {...props} />
+        </>
+    )
+}
+
+function UncheckBox(props){
+    return(
+        <button 
+            className='
+                btn 
+                px-1 
+                mx-1 
+                btn-danger 
+                text-center'
+            onClick={() => {
+                props.setToDoList(
+                    props.list.map(
+                        task => {
+                            task.isDone = false;
+                        }
+                    )
+                );
+                window.localStorage.setItem(
+                    'toDoList', JSON.stringify(
+                        props.list.map(
+                            task => {
+                                task.isDone = false;
+                            }
+                        )
+                    )
+                );
+            }}
+        >
+            UNCHECK ALL
+        </button>
+    )
+}
+
+function ClearDone(props){
+    let deleCount = 0;
+    return (
+        <button 
                 className='btn btn-danger mx-2' 
                 onClick={() => {
                     props.setToDoList(
@@ -123,7 +163,12 @@ function Header(props){
                 }}>
                     CLEAR DONE
             </button>
-            <button 
+    )
+}
+
+function ClearAll(props){
+    return(
+        <button 
                 className='btn btn-danger mx-2' 
                 onClick={() => {
                     props.setToDoList([]);
@@ -132,9 +177,9 @@ function Header(props){
                 }}>
                     CLEAR ALL
             </button>
-        </>
     )
 }
+
 // Responsible for rendering the list of tasks
 function ListItems(props){
     // Helper variable to rerender the page after things change. 
