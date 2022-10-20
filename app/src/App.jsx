@@ -96,38 +96,37 @@ function Header(props){
     )
 }
 
-function UncheckBox(props){
-    return(
-        <button 
-            className='
-                btn 
-                px-1 
-                mx-1 
-                btn-danger 
-                text-center'
-            onClick={() => {
-                props.setToDoList(
-                    props.list.map(
-                        task => {
-                            task.isDone = false;
-                        }
-                    )
-                );
-                window.localStorage.setItem(
-                    'toDoList', JSON.stringify(
-                        props.list.map(
-                            task => {
-                                task.isDone = false;
-                            }
-                        )
-                    )
-                );
-            }}
-        >
-            UNCHECK ALL
-        </button>
-    )
-}
+// function UncheckBox(props){
+//     return(
+//         <button 
+//             className='
+//                 btn 
+//                 px-1 
+//                 mx-1 
+//                 btn-danger 
+//                 text-center'
+//             onClick={() => {
+//                 props.list.forEach(
+//                     task => {
+//                         task.isDone = false;
+//                     }
+//                 )
+//                 props.setToDoList(...props.list);
+//                 // window.localStorage.setItem(
+//                 //     'toDoList', JSON.stringify(
+//                 //         props.list.forEach(
+//                 //             task => {
+//                 //                 task.isDone = false;
+//                 //             }
+//                 //         )
+//                 //     )
+//                 // );
+//             }}
+//         >
+//             UNCHECK ALL
+//         </button>
+//     )
+// }
 
 function ClearDone(props){
     let deleCount = 0;
