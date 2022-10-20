@@ -55,6 +55,7 @@ function InputBox(props){
             if(boxValue === ''){
                 return;
             }
+            // Makes the boxValue into a task object. 
             let taskObj = {isDone: false, task: boxValue, ID: new Date()};
             props.setToDoList([...props.list, taskObj]);
             window.localStorage.setItem('toDoList', JSON.stringify([...props.list, taskObj]));
@@ -75,19 +76,21 @@ function InputBox(props){
 }
 
 function ListItems(props){
+    // Helper variable to rerender the page after things change. 
     const [rerender, setRerender] = useState(true);
     if(!props.toDoList){
         return;
     }
+    // Sets a helper array for tasks. 
     let tasks = props.toDoList;
     if(props.page !== 'All'){
         let filterVar = props.page === 'Completed' ? true : false;
         tasks = props.toDoList.filter((item) => item.isDone === filterVar);
     }
     return (
-        <div id='taskSection' className='container'>
+        <div id='taskSection' className='row container d-flex justify-content-center'>
             {tasks.map( (item, index) => 
-                <div className='row d-flex justify-content-center container' 
+                <div className='m-2 d-flex col-12 justify-content-center text-center container-fluid' 
                 id={item.task + index} 
                 key={item.task + index}
                 > 
@@ -97,7 +100,7 @@ function ListItems(props){
                         setRerender(!rerender)
                     }}
                     type="checkbox" 
-                    defaultChecked={item.isDone ? true : false} 
+                    defaultChecked={item.isDone} 
                     id={item.task + index}
                     />
                         <div className={item.isDone ? "text-muted text-decoration-line-through" : '' }
@@ -105,7 +108,7 @@ function ListItems(props){
                         >
                             {item.task}
                         </div>
-                        <button className='btn btn-outline-danger col-2' onClick={() => {
+                        <button className='btn mx-1 btn-outline-danger text-center col-1' onClick={() => {
                                 props.setToDoList(tasks.filter(task => task.ID !== item.ID));
                                 props.setListCount(props.count - 1);
                                 window.localStorage.setItem('count', props.count - 1);
