@@ -287,15 +287,15 @@ function Footer(props){
             <p> Tasks Left: {props.listCount} &nbsp; </p>
             {sections.map( (item) => { 
                 return (
-                <div 
-                    key={item}
-                    id={item} 
-                    className={item === props.page ? 'fw-bold' : ''}  
-                    onClick={()=> props.setPage(item)}
-                > 
-                &nbsp; {item} &nbsp; 
-                </div>
-            )})}
+                    <div 
+                        key={item}
+                        id={item} 
+                        className={item === props.page ? 'fw-bold' : ''}  
+                        onClick={()=> props.setPage(item)}
+                    > 
+                    &nbsp; {item} &nbsp; 
+                    </div>
+                )})}
         </div>
     )
 }
